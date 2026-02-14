@@ -1,1 +1,2 @@
-This is a KTU webpage DEMO....
+This is a KTU webpage DEMO....Changes synces how
+
