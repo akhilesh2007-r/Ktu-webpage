@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTU Dashboard - Educational Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0052CC;
+            --primary-dark: #003D99;
+            --secondary: #00C896;
+            --accent: #FF6B35;
+            --danger: #E94560;
+            --warning: #FFB03B;
+            --success: #06D6A0;
+            --bg-dark: #0A0E27;
+            --bg-card: #151932;
+            --bg-hover: #1E2344;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0AEC0;
+            --text-muted: #718096;
+            --border: #2D3748;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px);
+            animation: slide 30s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(70px) translateY(70px); }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 2rem 0;
+            z-index: 100;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .logo {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .logo p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-section-title {
+            padding: 0 2rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .nav-item {
+            padding: 0.875rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            position: relative;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-left-color: var(--secondary);
+        }
+
+        .nav-item.active {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-left-color: var(--primary);
+        }
+
+        .nav-item .icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-item .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-left h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            color: var(--text-primary);
+            width: 300px;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+        }
+
+        .user-profile:hover {
+            border-color: var(--primary);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .user-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.75rem;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease;
+            animation-fill-mode: both;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 24px rgba(0, 82, 204, 0.15);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            opacity: 0.05;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:nth-child(1)::before { background: var(--primary); }
+        .stat-card:nth-child(2)::before { background: var(--secondary); }
+        .stat-card:nth-child(3)::before { background: var(--accent); }
+        .stat-card:nth-child(4)::before { background: var(--warning); }
+
+        .stat-card:hover::before {
+            transform: scale(1.5);
+            opacity: 0.1;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-card:nth-child(1) .stat-icon { background: rgba(0, 82, 204, 0.1); }
+        .stat-card:nth-child(2) .stat-icon { background: rgba(0, 200, 150, 0.1); }
+        .stat-card:nth-child(3) .stat-icon { background: rgba(255, 107, 53, 0.1); }
+        .stat-card:nth-child(4) .stat-icon { background: rgba(255, 176, 59, 0.1); }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .stat-trend.up {
+            background: rgba(6, 214, 160, 0.1);
+            color: var(--success);
+        }
+
+        .stat-trend.down {
+            background: rgba(233, 69, 96, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            animation: fadeIn 0.5s ease 0.5s;
+            animation-fill-mode: both;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .card-action {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .card-action:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Recent Activity */
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .activity-icon.blue { background: rgba(0, 82, 204, 0.1); }
+        .activity-icon.green { background: rgba(0, 200, 150, 0.1); }
+        .activity-icon.orange { background: rgba(255, 107, 53, 0.1); }
+        .activity-icon.purple { background: rgba(102, 126, 234, 0.1); }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .activity-time {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .action-btn .icon {
+            font-size: 1.5rem;
+        }
+
+        .action-btn-content h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .action-btn-content p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .action-btn:hover .action-btn-content p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Course List */
+        .course-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .course-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--bg-hover);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .course-item:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .course-thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .course-item:nth-child(2) .course-thumbnail { background: var(--gradient-2); }
+        .course-item:nth-child(3) .course-thumbnail { background: var(--gradient-3); }
+
+        .course-info {
+            flex: 1;
+        }
+
+        .course-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .course-progress {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .course-progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .header-right {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+        }
+
+        /* Button */
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 82, 204, 0.3);
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-hover);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(6, 214, 160, 0.1);
+            color: var(--success);
+        }
+
+        .status-badge.pending {
+            background: rgba(255, 176, 59, 0.1);
+            color: var(--warning);
+        }
+
+        .status-badge.inactive {
+            background: rgba(233, 69, 96, 0.1);
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>KTU</h1>
+            <p>Admin Portal</p>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Main</div>
+            <a href="#" class="nav-item active">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📚</span>
+                <span>Courses</span>
+                <span class="badge">12</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">👥</span>
+                <span>Students</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">👨‍🏫</span>
+                <span>Faculty</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Academic</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📝</span>
+                <span>Examinations</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📅</span>
+                <span>Schedule</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">🎓</span>
+                <span>Results</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📄</span>
+                <span>Assignments</span>
+                <span class="badge">5</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Management</div>
+            <a href="#" class="nav-item">
+                <span class="icon">💰</span>
+                <span>Finance</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📋</span>
+                <span>Reports</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⚙️</span>
+                <span>Settings</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h2>Welcome back, Admin</h2>
+                <p>Here's what's happening with your university today.</p>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search students, courses, faculty...">
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <div class="user-info">
+                        <h4>Admin User</h4>
+                        <p>Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-trend up">↑ 12%</div>
+                </div>
+                <div class="stat-value">2,847</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-trend up">↑ 8%</div>
+                </div>
+                <div class="stat-value">156</div>
+                <div class="stat-label">Active Courses</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">👨‍🏫</div>
+                    <div class="stat-trend up">↑ 3%</div>
+                </div>
+                <div class="stat-value">89</div>
+                <div class="stat-label">Faculty Members</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">🎓</div>
+                    <div class="stat-trend down">↓ 2%</div>
+                </div>
+                <div class="stat-value">94.5%</div>
+                <div class="stat-label">Pass Rate</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Activity</h3>
+                    <button class="card-action">View All</button>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon blue">📝</div>
+                        <div class="activity-content">
+                            <div class="activity-title">New exam schedule published</div>
+                            <div class="activity-meta">Mid-semester exams for S3 Computer Science</div>
+                        </div>
+                        <div class="activity-time">2h ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon green">✅</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Results uploaded successfully</div>
+                            <div class="activity-meta">Data Structures - 156 students evaluated</div>
+                        </div>
+                        <div class="activity-time">5h ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon orange">👤</div>
+                        <div class="activity-content">
+                            <div class="activity-title">New faculty member added</div>
+                            <div class="activity-meta">Dr. Sarah Johnson - Computer Science Dept.</div>
+                        </div>
+                        <div class="activity-time">1d ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon purple">📚</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Course materials updated</div>
+                            <div class="activity-meta">Machine Learning - Lecture notes and resources</div>
+                        </div>
+                        <div class="activity-time">2d ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Quick Actions</h3>
+                </div>
+                <div class="quick-actions">
+                    <div class="action-btn">
+                        <div class="icon">➕</div>
+                        <div class="action-btn-content">
+                            <h4>Add Student</h4>
+                            <p>Register new student</p>
+                        </div>
+                    </div>
+                    <div class="action-btn">
+                        <div class="icon">📝</div>
+                        <div class="action-btn-content">
+                            <h4>Create Course</h4>
+                            <p>Setup new course</p>
+                        </div>
+                    </div>
+                    <div class="action-btn">
+                        <div class="icon">📊</div>
+                        <div class="action-btn-content">
+                            <h4>Generate Report</h4>
+                            <p>Academic reports</p>
+                        </div>
+                    </div>
+                    <div class="action-btn">
+                        <div class="icon">📅</div>
+                        <div class="action-btn-content">
+                            <h4>Schedule Exam</h4>
+                            <p>Create exam schedule</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Courses -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Active Courses</h3>
+                <button class="btn-primary">Add New Course</button>
+            </div>
+            <div class="course-list">
+                <div class="course-item">
+                    <div class="course-thumbnail">💻</div>
+                    <div class="course-info">
+                        <div class="course-title">Data Structures & Algorithms</div>
+                        <div class="course-meta">
+                            <span>👥 156 Students</span>
+                            <span>👨‍🏫 Dr. Michael Chen</span>
+                            <span>📅 S3 - 2024</span>
+                        </div>
+                        <div class="course-progress">
+                            <div class="course-progress-bar" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-item">
+                    <div class="course-thumbnail">🤖</div>
+                    <div class="course-info">
+                        <div class="course-title">Machine Learning</div>
+                        <div class="course-meta">
+                            <span>👥 89 Students</span>
+                            <span>👨‍🏫 Dr. Sarah Johnson</span>
+                            <span>📅 S5 - 2024</span>
+                        </div>
+                        <div class="course-progress">
+                            <div class="course-progress-bar" style="width: 60%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="course-item">
+                    <div class="course-thumbnail">🌐</div>
+                    <div class="course-info">
+                        <div class="course-title">Web Development</div>
+                        <div class="course-meta">
+                            <span>👥 203 Students</span>
+                            <span>👨‍🏫 Prof. James Wilson</span>
+                            <span>📅 S4 - 2024</span>
+                        </div>
+                        <div class="course-progress">
+                            <div class="course-progress-bar" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Students -->
+        <div class="card" style="margin-top: 1.5rem;">
+            <div class="card-header">
+                <h3 class="card-title">Recent Student Registrations</h3>
+                <button class="card-action">View All Students</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Program</th>
+                            <th>Semester</th>
+                            <th>Status</th>
+                            <th>Registration Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>KTU2024001</strong></td>
+                            <td>Arjun Menon</td>
+                            <td>B.Tech Computer Science</td>
+                            <td>S1</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>Feb 12, 2026</td>
+                        </tr>
+                        <tr>
+                            <td><strong>KTU2024002</strong></td>
+                            <td>Priya Sharma</td>
+                            <td>B.Tech Electronics</td>
+                            <td>S1</td>
+                            <td><span class="status-badge pending">Pending</span></td>
+                            <td>Feb 11, 2026</td>
+                        </tr>
+                        <tr>
+                            <td><strong>KTU2024003</strong></td>
+                            <td>Rahul Kumar</td>
+                            <td>B.Tech Mechanical</td>
+                            <td>S1</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>Feb 10, 2026</td>
+                        </tr>
+                        <tr>
+                            <td><strong>KTU2024004</strong></td>
+                            <td>Anjali Nair</td>
+                            <td>B.Tech Civil</td>
+                            <td>S1</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>Feb 9, 2026</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Add interactivity
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality placeholder
+        const searchInput = document.querySelector('.search-box input');
+        searchInput.addEventListener('input', function() {
+            console.log('Searching for:', this.value);
+            // Add your search logic here
+        });
+
+        // Quick action buttons
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.querySelector('h4').textContent;
+                console.log('Action clicked:', action);
+                // Add your action logic here
+            });
+        });
+    </script>
+</body>
+</html>
